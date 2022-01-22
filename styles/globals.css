@@ -1,0 +1,4 @@
+@tailwind components;
+@tailwind utilities;
+
+@import '~antd/dist/antd.dark.css';
