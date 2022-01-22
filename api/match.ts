@@ -18,3 +18,20 @@ export function getMatchPage(): AxiosPromise<Response<PageData<IMatch>>> {
     },
   })
 }
+
+interface MatchDetailParams {
+  mid: number|string
+  type: number|string
+}
+
+export function getMatchDetail(params: MatchDetailParams) {
+  return request({
+    url: '/match/detail',
+    method: 'GET',
+    params: {
+      isnew: 1,
+      pid: 1,
+      ...params,
+    },
+  })
+}

@@ -1,9 +1,14 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import {useRouter} from 'next/router'
 
 const Match: React.FC = () => {
     const router =useRouter()
-    console.log(router)
+
+    useEffect(()=>{
+        const {id,type} = router.query
+
+    },[router.query])
+
     return (
         <>Match</>
     )

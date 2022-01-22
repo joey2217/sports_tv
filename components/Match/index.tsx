@@ -3,6 +3,7 @@ import { Divider, Image, Space, Typography } from 'antd'
 import Link from 'next/link'
 import { PlayCircleOutlined } from '@ant-design/icons'
 import { IMatch } from '../../types'
+import { queryStringify } from '../../utils'
 
 const Match: React.FC<IMatch> = ({
   name,
@@ -14,6 +15,8 @@ const Match: React.FC<IMatch> = ({
   hteam_logo,
   hteam_name,
   live_urls,
+  id,
+  type,
 }) => {
   const [scoreA, setScoreA] = useState(0)
   const [scoreB, setScoreB] = useState(0)
@@ -60,7 +63,15 @@ const Match: React.FC<IMatch> = ({
           <Space split={<Divider type="vertical" />}>
             <PlayCircleOutlined />
             {live_urls.map((live) => (
-              <Link href={`/match/${}`}>
+              <Link
+                key={live.index}
+                href={{
+                  pathname: `/match/${id}`,
+                  query: {
+                    type,
+                  },
+                }}
+              >
                 <a>{live.name}</a>
               </Link>
             ))}
