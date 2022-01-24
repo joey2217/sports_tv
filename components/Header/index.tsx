@@ -1,15 +1,18 @@
-import { Menu } from 'antd'
 import React, { memo } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import logo from '../../public/logo.png'
 
 const AppHeader: React.FC = () => {
   return (
-    <header className="flex items-center">
-      <div>LOGO</div>
-      <div className="flex-1">
-        <Menu selectedKeys={[]} mode="horizontal">
-          <Menu.Item key="mail">Navigation One</Menu.Item>
-        </Menu>
-      </div>
+    <header className="flex items-center h-10">
+      <Link href="/">
+        <a className="flex items-center">
+          <Image width={30} height={30} src={logo} alt="logo" />
+          SportTV
+        </a>
+      </Link>
+      <div className="flex-1"></div>
     </header>
   )
 }

@@ -47,3 +47,37 @@ export interface IMatch {
   video_url: string
   yazhi_jishi: string
 }
+export interface MatchDetail {
+  token: string
+  hascount: number
+  haslineup: number
+  matchinfo: IMatch
+}
+
+export interface MatchStat {
+  awayrank: string
+  homerank: string
+  players: any[]
+}
+
+
+export interface IPlayerStats {
+  id: string | number
+  name: string
+  nameEn: string
+  avatar: string
+  number: string
+  min: string
+  score: string
+  shot: string // 投篮 2-7
+  three: string // 三分 2-7
+  freeThrow: string // 罚球 2-7
+  offensiveRebound: string // 前场篮板
+  defensiveRebound: string // 后场篮板
+  rebound: string // 篮板
+  assist: string // 助攻
+  block: string // 盖帽
+  steal: string // 抢断
+  turnover: string // 失误
+  foul: string // 犯规
+}

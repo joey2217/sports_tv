@@ -14,7 +14,6 @@ const Match: React.FC<IMatch> = ({
   score,
   hteam_logo,
   hteam_name,
-  live_urls,
   id,
   type,
 }) => {
@@ -58,26 +57,19 @@ const Match: React.FC<IMatch> = ({
           <div>{hteam_name}</div>
         </div>
       </div>
-      <div className="w-56">
-        {live_urls.length > 0 && (
-          <Space split={<Divider type="vertical" />}>
-            <PlayCircleOutlined />
-            {live_urls.map((live) => (
-              <Link
-                key={live.index}
-                href={{
-                  pathname: `/match/${id}`,
-                  query: {
-                    type,
-                  },
-                }}
-              >
-                <a>{live.name}</a>
-              </Link>
-            ))}
-          </Space>
-        )}
-      </div>
+      <Space split={<Divider type="vertical" />}>
+        <PlayCircleOutlined />
+        <Link
+          href={{
+            pathname: `/match/${id}`,
+            query: {
+              type,
+            },
+          }}
+        >
+          <a>{status_up_name === '完场' ? '视频' : '直播'}</a>
+        </Link>
+      </Space>
     </div>
   )
 }
