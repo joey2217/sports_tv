@@ -5,3 +5,17 @@ export function queryStringify(query: {}): string {
   })
   return params.toString()
 }
+
+const LIKES = 'likes'
+
+export function getLocalLikes(): string[] {
+  const localData = localStorage[LIKES]
+  if (localData) {
+    return (localData as string).split(',')
+  }
+  return []
+}
+
+export function setLocalLikes(likes: string[]) {
+  localStorage[LIKES] = likes.join()
+}

@@ -9,7 +9,7 @@ const AppHeader: React.FC = () => {
       <Link href="/">
         <a className="flex items-center">
           <Image width={30} height={30} src={logo} alt="logo" />
-          SportTV
+          <span>SportTV</span>
         </a>
       </Link>
       <div className="flex-1"></div>

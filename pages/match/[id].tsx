@@ -37,10 +37,15 @@ const Match: React.FC = () => {
     <>
       {match ? (
         <div>
+          <div className="text-center text-lg">
+            {match.ateam_name}
+            <span> VS </span>
+            {match.hteam_name}
+            <span> ( {match.status_up_name} ) </span>
+          </div>
           <div className="text-center">
-            <span className="pr-6">{match.status_up_name}</span>
             {match.status_up_name === '完场' ? (
-              <span>视频</span>
+              <span>视频集锦</span>
             ) : (
               <>
                 <span className="pr-2">直播:</span>

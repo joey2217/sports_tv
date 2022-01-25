@@ -1,14 +1,15 @@
 import type { NextPage } from 'next'
-import { List, Tabs } from 'antd'
+import Link from 'next/link'
+import { Button, List, Tabs } from 'antd'
 import { useEffect, useState } from 'react'
 import { IMatch, Category } from '../types'
 import { getMatchPage } from '../api/match'
 import { getCategoryList } from '../api/category'
+import { getLocalLikes } from '../utils'
 import Match from '../components/Match'
+import { HeartFilled } from '@ant-design/icons'
 
 const { TabPane } = Tabs
-
-const likes = ['NBA', 'CBA']
 
 const Home: NextPage = () => {
   const [list, setList] = useState<IMatch[]>([])
@@ -18,8 +19,12 @@ const Home: NextPage = () => {
   useEffect(() => {
     getCategoryList().then((res) => {
       let categoryArr = res.data.data.twoCategoryList
-      categoryArr = categoryArr.filter((c) => likes.includes(c.name))
       if (categoryArr.length > 0) {
+        let localLikes = getLocalLikes()
+        if (localLikes.length === 0) {
+          localLikes = [categoryArr[0].name]
+        }
+        categoryArr = categoryArr.filter((c) => localLikes.includes(c.name))
         setCategory(String(categoryArr[0].id))
         setCategoryList(categoryArr)
       }
@@ -36,7 +41,17 @@ const Home: NextPage = () => {
 
   return (
     <div>
-      <Tabs activeKey={category} onChange={(key) => setCategory(key)}>
+      <Tabs
+        activeKey={category}
+        onChange={(key) => setCategory(key)}
+        tabBarExtraContent={
+          <Link href="/like">
+            <a>
+              <Button icon={<HeartFilled/>} type="link">收藏</Button>
+            </a>
+          </Link>
+        }
+      >
         {categoryList.map((c) => (
           <TabPane tab={c.name} key={c.id} />
         ))}
