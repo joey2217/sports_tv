@@ -32,7 +32,7 @@ const Match: React.FC<IMatch> = ({
   }, [score])
 
   return (
-    <div className="w-full flex flex-col md:flex-row items-center justify-between">
+    <div className="w-full flex flex-col md:flex-row items-center justify-between text-center">
       <div className="text-center w-48">
         {dayjs(matchtime).isToday()
           ? dayjs(matchtime).format('HH:mm') + '(今日)'
@@ -41,7 +41,7 @@ const Match: React.FC<IMatch> = ({
       </div>
       <div className="flex items-center text-center">
         <div className="flex items-center">
-          <div className="w-36 text-right pr-2">{ateam_name}</div>
+          <div className="w-16 text-right pr-2">{ateam_name}</div>
           <Image
             width={40}
             height={40}
@@ -58,7 +58,7 @@ const Match: React.FC<IMatch> = ({
             {scoreA}
           </div>
         </div>
-        <div className="text-center w-14">
+        <div className="text-center w-11">
           <div>{name}</div>
           <div>{status_up_name}</div>
         </div>
@@ -78,7 +78,7 @@ const Match: React.FC<IMatch> = ({
             preview={false}
             alt="hteam_logo"
           />
-          <div className="w-36 text-left pl-2">{hteam_name}</div>
+          <div className="w-16 text-left pl-2">{hteam_name}</div>
         </div>
       </div>
       <div className="w-10">
