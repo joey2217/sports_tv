@@ -32,7 +32,7 @@ const Match: React.FC<IMatch> = ({
   }, [score])
 
   return (
-    <div className="w-full flex items-center justify-between">
+    <div className="w-full flex flex-col md:flex-row items-center justify-between">
       <div className="text-center w-48">
         {dayjs(matchtime).isToday()
           ? dayjs(matchtime).format('HH:mm') + '(今日)'
