@@ -80,6 +80,7 @@ export interface IPlayerStats {
   steal: string // 抢断
   turnover: string // 失误
   foul: string // 犯规
+  isStart: boolean // 首发
 }
 
 export interface Category {

@@ -24,7 +24,7 @@ const Match: React.FC = () => {
         if (matchDetail.status_up != 10) {
           if (matchDetail.live_urls.length > 0) {
             setLiveUrls(res.data.data.matchinfo.live_urls)
-            setLiveUrl(res.data.data.matchinfo.live_urls[1].url)
+            setLiveUrl(res.data.data.matchinfo.live_urls[0].url)
           }
         } else {
           setLiveUrl(matchDetail.video_url)
@@ -43,9 +43,9 @@ const Match: React.FC = () => {
               <span>视频</span>
             ) : (
               <>
-                <span>直播:</span>
+                <span className="pr-2">直播:</span>
                 <Radio.Group
-                  defaultValue={liveUrl}
+                  value={liveUrl}
                   buttonStyle="solid"
                   onChange={(e) => setLiveUrl(e.target.value)}
                 >
@@ -62,7 +62,7 @@ const Match: React.FC = () => {
             <HlsPlayer liveUrl={liveUrl} />
           </div>
           <div>
-            <DataStat mid={match.id} match={match}/>
+            <DataStat mid={match.id} match={match} />
           </div>
         </div>
       ) : (

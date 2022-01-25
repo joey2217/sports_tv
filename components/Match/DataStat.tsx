@@ -42,10 +42,10 @@ const DataStat: React.FC<Props> = ({ mid, match }) => {
         <TabPane tab="球员" key="players">
           <Tabs defaultActiveKey="a" centered size="small">
             <TabPane tab={match.ateam_name} key="a">
-              <PlayerStats playerStats={aTeamPlayers} />
+              <PlayerStats key="a" playerStats={aTeamPlayers} />
             </TabPane>
             <TabPane tab={match.hteam_name} key="h">
-              <PlayerStats playerStats={hTeamPlayers} />
+              <PlayerStats key="h" playerStats={hTeamPlayers} />
             </TabPane>
           </Tabs>
         </TabPane>
@@ -63,6 +63,19 @@ const columns = [
     key: 'name',
     width: '150px',
     ellipsis: true,
+    render: (_: any, record: IPlayerStats) => (
+      <>
+        {/* <Avatar size="small" src={record.avatar} alt={record.name} /> */}
+        <span>{record.name}</span>
+        <span>#{record.number}</span>
+      </>
+    ),
+  },
+  {
+    title: '首发',
+    dataIndex: 'isStart',
+    key: 'isStart',
+    render: (isStart: boolean) => (isStart ? '是' : '否'),
   },
   {
     title: '时间',
@@ -143,14 +156,14 @@ function getPlayerStats(playerStatArr: string[]): IPlayerStats {
     rebound,
     assist,
     steal,
-    s9,
-    s10,
-    s11,
+    block,
+    turnover,
+    foul,
     s12,
     score,
     s14,
-    block,
-    turnover,
+    s15,
+    isStart,
   ] = stat.split('^')
   return {
     id,
@@ -170,7 +183,8 @@ function getPlayerStats(playerStatArr: string[]): IPlayerStats {
     score,
     block,
     turnover,
-    foul: '0',
+    foul,
+    isStart: isStart === '0',
   }
 }
 
@@ -182,7 +196,7 @@ const PlayerStats: React.FC<{ playerStats: string[][] }> = ({
     setList(playerStats.map((p) => getPlayerStats(p)))
   }, [playerStats])
 
-  return <Table dataSource={list} columns={columns} />
+  return <Table dataSource={list} columns={columns} pagination={false} />
 }
 
 const TeamStats: React.FC<{ teamStats: string[]; match: IMatch }> = ({
@@ -241,7 +255,9 @@ const TeamStats: React.FC<{ teamStats: string[]; match: IMatch }> = ({
         <div className="flex items-center justify-between w-full">
           <div
             className={
-              aScore > hScore ? 'text-green-500 font-bold text-lg' : ''
+              aScore > hScore
+                ? 'text-green-500 font-bold text-lg text-center w-12'
+                : 'w-12 text-center'
             }
           >
             {aScore}
@@ -249,7 +265,9 @@ const TeamStats: React.FC<{ teamStats: string[]; match: IMatch }> = ({
           <div>得分</div>
           <div
             className={
-              hScore > aScore ? 'text-green-500 font-bold text-lg' : ''
+              hScore > aScore
+                ? 'text-green-500 font-bold text-lg text-center w-12'
+                : 'w-12 text-center'
             }
           >
             {hScore}
@@ -259,13 +277,21 @@ const TeamStats: React.FC<{ teamStats: string[]; match: IMatch }> = ({
       <List.Item>
         <div className="flex items-center justify-between w-full">
           <div
-            className={aReb > hReb ? 'text-green-500 font-bold text-lg' : ''}
+            className={
+              aReb > hReb
+                ? 'text-green-500 font-bold text-lg text-center w-12'
+                : 'w-12 text-center'
+            }
           >
             {aReb}
           </div>
           <div>篮板</div>
           <div
-            className={hReb > aReb ? 'text-green-500 font-bold text-lg' : ''}
+            className={
+              hReb > aReb
+                ? 'text-green-500 font-bold text-lg text-center w-12'
+                : 'w-12 text-center'
+            }
           >
             {hReb}
           </div>
@@ -275,7 +301,9 @@ const TeamStats: React.FC<{ teamStats: string[]; match: IMatch }> = ({
         <div className="flex items-center justify-between w-full">
           <div
             className={
-              aAssist > hAssist ? 'text-green-500 font-bold text-lg' : ''
+              aAssist > hAssist
+                ? 'text-green-500 font-bold text-lg text-center w-12'
+                : 'w-12 text-center'
             }
           >
             {aAssist}
@@ -283,7 +311,9 @@ const TeamStats: React.FC<{ teamStats: string[]; match: IMatch }> = ({
           <div>助攻</div>
           <div
             className={
-              hAssist > aAssist ? 'text-green-500 font-bold text-lg' : ''
+              hAssist > aAssist
+                ? 'text-green-500 font-bold text-lg text-center w-12'
+                : 'w-12 text-center'
             }
           >
             {hAssist}
@@ -294,7 +324,9 @@ const TeamStats: React.FC<{ teamStats: string[]; match: IMatch }> = ({
         <div className="flex items-center justify-between w-full">
           <div
             className={
-              aBlock > hBlock ? 'text-green-500 font-bold text-lg' : ''
+              aBlock > hBlock
+                ? 'text-green-500 font-bold text-lg text-center w-12'
+                : 'w-12 text-center'
             }
           >
             {aBlock}
@@ -302,7 +334,9 @@ const TeamStats: React.FC<{ teamStats: string[]; match: IMatch }> = ({
           <div>盖帽</div>
           <div
             className={
-              hBlock > aBlock ? 'text-green-500 font-bold text-lg' : ''
+              hBlock > aBlock
+                ? 'text-green-500 font-bold text-lg text-center w-12'
+                : 'w-12 text-center'
             }
           >
             {hBlock}
@@ -313,7 +347,9 @@ const TeamStats: React.FC<{ teamStats: string[]; match: IMatch }> = ({
         <div className="flex items-center justify-between w-full">
           <div
             className={
-              aSteal > hSteal ? 'text-green-500 font-bold text-lg' : ''
+              aSteal > hSteal
+                ? 'text-green-500 font-bold text-lg text-center w-12'
+                : 'w-12 text-center'
             }
           >
             {aSteal}
@@ -321,7 +357,9 @@ const TeamStats: React.FC<{ teamStats: string[]; match: IMatch }> = ({
           <div>抢断</div>
           <div
             className={
-              hSteal > aSteal ? 'text-green-500 font-bold text-lg' : ''
+              hSteal > aSteal
+                ? 'text-green-500 font-bold text-lg text-center w-12'
+                : 'w-12 text-center'
             }
           >
             {hSteal}
@@ -332,7 +370,9 @@ const TeamStats: React.FC<{ teamStats: string[]; match: IMatch }> = ({
         <div className="flex items-center justify-between w-full">
           <div
             className={
-              aTurnover < hTurnover ? 'text-green-500 font-bold text-lg' : ''
+              aTurnover < hTurnover
+                ? 'text-green-500 font-bold text-lg text-center w-12'
+                : 'w-12 text-center'
             }
           >
             {aTurnover}
@@ -340,7 +380,9 @@ const TeamStats: React.FC<{ teamStats: string[]; match: IMatch }> = ({
           <div>失误</div>
           <div
             className={
-              hTurnover < aTurnover ? 'text-green-500 font-bold text-lg' : ''
+              hTurnover < aTurnover
+                ? 'text-green-500 font-bold text-lg text-center w-12'
+                : 'w-12 text-center'
             }
           >
             {hTurnover}
