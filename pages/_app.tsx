@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="container mx-auto">
+      <div className="container mx-auto" style={{colorScheme:'dark'}}>
         <Header />
         <main className="py-2">
           <Component {...pageProps} />

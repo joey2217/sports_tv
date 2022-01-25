@@ -1,4 +1,4 @@
-import { List, Tabs, Image, Table } from 'antd'
+import { List, Tabs, Image, Table,Skeleton } from 'antd'
 import React, { memo, useEffect, useState } from 'react'
 import { getMatchDataStat } from '../../api/match'
 import { IMatch, IPlayerStats } from '../../types'
@@ -26,7 +26,7 @@ const DataStat: React.FC<Props> = ({ mid, match }) => {
         console.log(players)
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
       })
   }, [mid])
   return (
@@ -36,7 +36,7 @@ const DataStat: React.FC<Props> = ({ mid, match }) => {
           {teamStats.length === 2 ? (
             <TeamStats teamStats={teamStats} match={match} />
           ) : (
-            <div>Loading</div>
+            <Skeleton active />
           )}
         </TabPane>
         <TabPane tab="球员" key="players">

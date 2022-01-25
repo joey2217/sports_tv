@@ -5,7 +5,10 @@ import request from '../utils/request'
 
 const today = dayjs().format('YYYY-MM-DD')
 
-export function getMatchPage(cid = '1'): AxiosPromise<Response<PageData<IMatch>>> {
+export function getMatchPage(
+  cid = '1',
+  starttime = today,
+): AxiosPromise<Response<PageData<IMatch>>> {
   return request({
     url: '/match/list/new',
     method: 'GET',
@@ -14,7 +17,7 @@ export function getMatchPage(cid = '1'): AxiosPromise<Response<PageData<IMatch>>
       ishot: 1,
       pn: 1,
       ps: 20,
-      starttime: today,
+      starttime: starttime || today,
       pid: 1,
       type: 2,
       cid,

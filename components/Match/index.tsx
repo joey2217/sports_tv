@@ -3,9 +3,12 @@ import { Image } from 'antd'
 import Link from 'next/link'
 import dayjs from 'dayjs'
 import isToday from 'dayjs/plugin/isToday'
+import classnames from 'classnames'
 import { IMatch } from '../../types'
 
 dayjs.extend(isToday)
+
+const weekDays = ['日', '一', '二', '三', '四', '五', '六']
 
 const Match: React.FC<IMatch> = ({
   name,
@@ -30,14 +33,15 @@ const Match: React.FC<IMatch> = ({
 
   return (
     <div className="w-full flex items-center justify-between">
-      <div className="w-28 text-center">
+      <div className="text-center w-48">
         {dayjs(matchtime).isToday()
-          ? dayjs(matchtime).format('HH:mm')
-          : dayjs(matchtime).format('YYYY-MM-DD HH:mm')}
+          ? dayjs(matchtime).format('HH:mm') + '(今日)'
+          : dayjs(matchtime).format('YYYY-MM-DD HH:mm') +
+            `(周${weekDays[dayjs(matchtime).day()]})`}
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center text-center">
         <div className="flex items-center">
-          <div>{ateam_name}</div>
+          <div className="w-36 text-right pr-2">{ateam_name}</div>
           <Image
             width={40}
             height={40}
@@ -45,14 +49,28 @@ const Match: React.FC<IMatch> = ({
             preview={false}
             alt="ateam_logo"
           />
-          <div>{scoreA}</div>
+          <div
+            className={classnames(
+              scoreA > scoreB ? 'text-green-500' : '',
+              'text-3xl font-bold w-16 text-center'
+            )}
+          >
+            {scoreA}
+          </div>
         </div>
-        <div className="text-center">
+        <div className="text-center w-14">
           <div>{name}</div>
           <div>{status_up_name}</div>
         </div>
         <div className="flex items-center">
-          <div>{scoreB}</div>
+          <div
+            className={classnames(
+              scoreB > scoreA ? 'text-green-500' : '',
+              'text-3xl font-bold w-16 text-center'
+            )}
+          >
+            {scoreB}
+          </div>
           <Image
             width={40}
             height={40}
@@ -60,20 +78,22 @@ const Match: React.FC<IMatch> = ({
             preview={false}
             alt="hteam_logo"
           />
-          <div>{hteam_name}</div>
+          <div className="w-36 text-left pl-2">{hteam_name}</div>
         </div>
       </div>
       <div className="w-10">
-        <Link
-          href={{
-            pathname: `/match/${id}`,
-            query: {
-              type,
-            },
-          }}
-        >
-          <a>{status_up_name === '完场' ? '视频' : '直播'}</a>
-        </Link>
+        {status_up_name !== '未开赛' && (
+          <Link
+            href={{
+              pathname: `/match/${id}`,
+              query: {
+                type,
+              },
+            }}
+          >
+            <a>{status_up_name === '完场' ? '视频' : '直播'}</a>
+          </Link>
+        )}
       </div>
     </div>
   )

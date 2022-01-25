@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react'
-import { Row, Col, Card, Avatar } from 'antd'
+import { Row, Col, Card, Avatar, Skeleton } from 'antd'
 import { HeartFilled, HeartOutlined } from '@ant-design/icons'
 import { getCategoryList } from '../api/category'
 import { Category } from '../types'
@@ -21,7 +21,7 @@ const Like: React.FC = () => {
     setLocalLikes(likes)
   }, [likes])
 
-  return (
+  return categoryList.length > 0 ? (
     <Row gutter={[10, 10]}>
       {categoryList.map((c) => (
         <Col key={c.name} xs={12} sm={8} md={6} lg={4} xl={3}>
@@ -52,6 +52,8 @@ const Like: React.FC = () => {
         </Col>
       ))}
     </Row>
+  ) : (
+    <Skeleton active />
   )
 }
 

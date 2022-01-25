@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react'
-import { Radio } from 'antd'
+import { Radio, Skeleton } from 'antd'
 import { useRouter } from 'next/router'
 import HlsPlayer from '../../components/Player/HlsPlayer'
 import DataStat from '../../components/Match/DataStat'
@@ -71,7 +71,7 @@ const Match: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div>loading</div>
+        <Skeleton active />
       )}
     </>
   )
