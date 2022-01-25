@@ -13,6 +13,7 @@ const HlsPlayer: React.FC<Props> = ({ liveUrl }) => {
     try {
       const video = videoEl.current
       if (video && liveUrl) {
+        console.log(liveUrl, 'liveUrl')
         if (hls) {
           hls.attachMedia(video)
           hls.on(Hls.Events.MEDIA_ATTACHED, function () {
@@ -25,6 +26,12 @@ const HlsPlayer: React.FC<Props> = ({ liveUrl }) => {
                   ' quality level'
               )
             })
+          })
+          hls.on(Hls.Events.ERROR, function (event, data) {
+            const errorType = data.type
+            const errorDetails = data.details
+            const errorFatal = data.fatal
+            console.error('error', errorType, errorDetails, errorFatal)
           })
           // hls.on(Hls.Events.MANIFEST_PARSED, function () {
           //   video.play();

@@ -32,14 +32,14 @@ const DataStat: React.FC<Props> = ({ mid, match }) => {
   return (
     <div>
       <Tabs defaultActiveKey="teams" centered>
-        <TabPane tab="teams" key="teams">
+        <TabPane tab="球队" key="teams">
           {teamStats.length === 2 ? (
             <TeamStats teamStats={teamStats} match={match} />
           ) : (
             <div>Loading</div>
           )}
         </TabPane>
-        <TabPane tab="players" key="players">
+        <TabPane tab="球员" key="players">
           <Tabs defaultActiveKey="a" centered size="small">
             <TabPane tab={match.ateam_name} key="a">
               <PlayerStats playerStats={aTeamPlayers} />
@@ -61,69 +61,71 @@ const columns = [
     title: '姓名',
     dataIndex: 'name',
     key: 'name',
+    width: '150px',
+    ellipsis: true,
   },
   {
-    title: 'min',
+    title: '时间',
     dataIndex: 'min',
     key: 'min',
   },
   {
-    title: 'score',
+    title: '得分',
     dataIndex: 'score',
     key: 'score',
   },
   {
-    title: 'shot',
+    title: '投篮',
     dataIndex: 'shot',
     key: 'shot',
   },
   {
-    title: 'three',
+    title: '三分',
     dataIndex: 'three',
     key: 'three',
   },
   {
-    title: 'freeThrow',
+    title: '罚球',
     dataIndex: 'freeThrow',
     key: 'freeThrow',
   },
   {
-    title: 'offensiveRebound',
+    title: '前场篮板',
     dataIndex: 'offensiveRebound',
     key: 'offensiveRebound',
   },
   {
-    title: 'defensiveRebound',
+    title: '后场篮板',
     dataIndex: 'defensiveRebound',
     key: 'defensiveRebound',
   },
   {
-    title: 'rebound',
+    title: '总篮板',
     dataIndex: 'rebound',
     key: 'rebound',
   },
   {
-    title: 'assist',
+    title: '助攻',
     dataIndex: 'assist',
     key: 'assist',
   },
   {
-    title: 'block',
+    title: '盖帽',
     dataIndex: 'block',
     key: 'block',
   },
   {
-    title: 'steal',
+    title: '抢断',
     dataIndex: 'steal',
     key: 'steal',
   },
   {
-    title: 'turnover',
+    title: '失误',
     dataIndex: 'turnover',
     key: 'turnover',
   },
   {
-    title: 'foul',
+    title: '犯规',
     dataIndex: 'foul',
     key: 'foul',
   },

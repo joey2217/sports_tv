@@ -81,3 +81,11 @@ export interface IPlayerStats {
   turnover: string // 失误
   foul: string // 犯规
 }
+
+export interface Category {
+  id: number
+  logo: string
+  name: string
+  name_zh: string
+  type: number
+}

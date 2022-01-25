@@ -1,9 +1,11 @@
 import React, { memo, useEffect, useState } from 'react'
-import { Divider, Image, Space, Typography } from 'antd'
+import { Image } from 'antd'
 import Link from 'next/link'
-import { PlayCircleOutlined } from '@ant-design/icons'
+import dayjs from 'dayjs'
+import isToday from 'dayjs/plugin/isToday'
 import { IMatch } from '../../types'
-import { queryStringify } from '../../utils'
+
+dayjs.extend(isToday)
 
 const Match: React.FC<IMatch> = ({
   name,
@@ -28,7 +30,11 @@ const Match: React.FC<IMatch> = ({
 
   return (
     <div className="w-full flex items-center justify-between">
-      <div>{matchtime}</div>
+      <div className="w-28 text-center">
+        {dayjs(matchtime).isToday()
+          ? dayjs(matchtime).format('HH:mm')
+          : dayjs(matchtime).format('YYYY-MM-DD HH:mm')}
+      </div>
       <div className="flex items-center">
         <div className="flex items-center">
           <div>{ateam_name}</div>
@@ -57,8 +63,7 @@ const Match: React.FC<IMatch> = ({
           <div>{hteam_name}</div>
         </div>
       </div>
-      <Space split={<Divider type="vertical" />}>
-        <PlayCircleOutlined />
+      <div className="w-10">
         <Link
           href={{
             pathname: `/match/${id}`,
@@ -69,7 +74,7 @@ const Match: React.FC<IMatch> = ({
         >
           <a>{status_up_name === '完场' ? '视频' : '直播'}</a>
         </Link>
-      </Space>
+      </div>
     </div>
   )
 }

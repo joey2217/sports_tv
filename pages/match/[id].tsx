@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from 'react'
 import { Radio } from 'antd'
 import { useRouter } from 'next/router'
-import HlsPlayer from '../../components/HlsPlayer'
+import HlsPlayer from '../../components/Player/HlsPlayer'
 import DataStat from '../../components/Match/DataStat'
 import { getMatchDetail } from '../../api/match'
 import { IMatch, Live } from '../../types'
@@ -59,7 +59,7 @@ const Match: React.FC = () => {
             )}
           </div>
           <div>
-            {/* <HlsPlayer liveUrl={liveUrl} /> */}
+            <HlsPlayer liveUrl={liveUrl} />
           </div>
           <div>
             <DataStat mid={match.id} match={match}/>
