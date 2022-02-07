@@ -26,7 +26,7 @@ const Match: React.FC<IMatch> = ({
   const [scoreB, setScoreB] = useState(0)
 
   useEffect(() => {
-    const [a, b] = score.split('-')
+    const [b, a] = score.split('-')
     setScoreA(Number(a))
     setScoreB(Number(b))
   }, [score])
