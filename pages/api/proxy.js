@@ -3,7 +3,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware')
 module.exports = (req, res) => {
   // 创建代理对象并转发请求
   createProxyMiddleware({
-    target: 'https://kinggm520.cn/prod-api/',
+    target: 'https://dszbok.com/prod-api/',
     changeOrigin: true,
     pathRewrite: {
       // 通过路径重写，去除请求路径中的 `/backend`
