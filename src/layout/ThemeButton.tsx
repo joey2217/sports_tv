@@ -1,7 +1,5 @@
-"use client"
-
 import React, { useEffect } from 'react'
-import { useThemeStore, setAppTheme } from '@/store/theme'
+import { useThemeStore, setAppTheme } from '../store/theme'
 
 const ThemeButton: React.FC = () => {
   const { theme, setTheme } = useThemeStore()
