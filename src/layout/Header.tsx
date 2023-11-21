@@ -1,20 +1,13 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import ThemeButton from './ThemeButton'
-import { Link } from 'react-router-dom'
-import logoImg from './logo.png'
 
 const Header: React.FC = () => {
   return (
-    <header className="navbar bg-base-200">
-      <nav className="navbar-start">
-        <Link to="/" className="btn btn-ghost normal-case text-xl ">
-          <img src={logoImg} alt="logo" className="w-6 h-6" />
-          <span className="text-base font-semibold md:text-lg">LOGO</span>
-        </Link>
-      </nav>
-      <div className="navbar-end">
-        <ThemeButton />
-      </div>
+    <header className="flex items-center gap-1 flex-wrap min-h-[40px]">
+      <NavLink to="/">Home</NavLink>
+      <NavLink to="/cates">cates</NavLink>
+      <ThemeButton />
     </header>
   )
 }

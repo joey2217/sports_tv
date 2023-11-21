@@ -1,17 +1,32 @@
-import React, { useEffect } from 'react'
-import { useThemeStore, setAppTheme } from '../store/theme'
+import React, { useEffect, useState } from 'react'
+
+const THEME_ATTR = 'data-theme'
+
+type Theme = 'dark' | 'light'
+const LOCAL_THEME_KEY = 'stv_theme'
 
 const ThemeButton: React.FC = () => {
-  const { theme, setTheme } = useThemeStore()
+  const [theme, setTheme] = useState<Theme>(() => {
+    const localData = localStorage.getItem(LOCAL_THEME_KEY)
+    if (localData) {
+      return localData as Theme
+    }
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark'
+    }
+    return 'light'
+  })
 
   useEffect(() => {
-    setAppTheme(theme)
+    localStorage.setItem(LOCAL_THEME_KEY, theme)
+    document.documentElement.setAttribute(THEME_ATTR, theme)
   }, [theme])
 
   return (
-    <label className="swap swap-rotate">
+    <label className="swap swap-rotate overflow-hidden ml-auto">
       {/* this hidden checkbox controls the state */}
       <input
+        hidden
         type="checkbox"
         checked={theme === 'dark'}
         onChange={(e) => setTheme(e.target.checked ? 'dark' : 'light')}

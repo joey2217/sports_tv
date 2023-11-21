@@ -1,10 +1,12 @@
 import React from 'react'
 import { RouterProvider } from 'react-router-dom'
 import router from './router'
-import { useInitData } from './store/category'
+// import dayjs from 'dayjs'
+// import 'dayjs/locale/zh-cn'
+
+// dayjs.locale('zh-cn')
 
 const App: React.FC = () => {
-  useInitData()
   return <RouterProvider router={router} />
 }
 

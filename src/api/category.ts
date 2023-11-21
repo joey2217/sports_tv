@@ -1,7 +1,7 @@
 import { Category } from '../types'
 import request from './request'
 
-export function getCategoryList(): Promise<Category[]> {
+export function fetchCategoryList(): Promise<Category[]> {
   return request({
     url: '/category/list',
     params: {
