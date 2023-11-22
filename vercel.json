@@ -1,0 +1,12 @@
+{
+    "rewrites": [
+        {
+            "source": "/prod-api/:match*",
+            "destination": "https://dszbok.com/prod-api/:match*"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
+        }
+    ]
+}
