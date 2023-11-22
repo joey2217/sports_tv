@@ -29,7 +29,7 @@ const HlsPlayer: React.FC<Props> = ({ liveUrl, seek, onEnd, onTimeUpdate }) => {
             hls.on(Hls.Events.MEDIA_ATTACHED, function () {
               console.log('video and hls.js are now bound together !')
               hls.loadSource(liveUrl)
-              hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+              hls.on(Hls.Events.MANIFEST_PARSED, function (_event, data) {
                 console.log(
                   'manifest loaded, found ' +
                     data.levels.length +
@@ -37,7 +37,7 @@ const HlsPlayer: React.FC<Props> = ({ liveUrl, seek, onEnd, onTimeUpdate }) => {
                 )
               })
             })
-            hls.on(Hls.Events.ERROR, function (event, data) {
+            hls.on(Hls.Events.ERROR, function (_event, data) {
               const errorType = data.type
               const errorDetails = data.details
               const errorFatal = data.fatal

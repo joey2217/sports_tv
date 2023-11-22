@@ -10,7 +10,7 @@ interface Props {
 const MatchCard: React.FC<Props> = ({ match }) => {
   return (
     <Link
-      to={`/match/${match.id}`}
+      to={`/match/${match.id}/${match.type}`}
       className="rounded-lg lg:rounded-2xl bg-base-300 shadow-xl text-center flex items-center justify-between gap-1 lg:gap-4"
     >
       <div className="w-24 flex flex-col items-center">
