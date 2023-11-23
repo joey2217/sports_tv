@@ -8,7 +8,7 @@ const Header: React.FC = () => {
       <NavLink to="/">首页</NavLink>
       <NavLink to="/hot/1">足球</NavLink>
       <NavLink to="/hot/2">篮球</NavLink>
-      {/* <NavLink to="/cates">分类</NavLink> */}
+      <NavLink to="/cates">分类</NavLink>
       <ThemeButton />
     </header>
   )

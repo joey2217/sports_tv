@@ -4,8 +4,11 @@ import request from './request'
 export interface PageParams {
   pn: number | string
   type: number | string
+  cid: number | string
 }
 
+// 法甲 https://dszbok.com/prod-api/match/list/new?isfanye=1&type=1&cid=142&ishot=-1&pn=1&ps=20&level=&name=&langtype=zh&starttime=2023-11-23&pid=1&zoneId=Asia%2FShanghai
+//  NBA https://dszbok.com/prod-api/match/list/new?isfanye=1&type=2&cid=1&ishot=-1&pn=1&ps=20&level=&name=&langtype=zh&starttime=2023-11-23&pid=1&zoneId=Asia%2FShanghai
 // 篮球 https://dszbok.com/prod-api/match/list/new?isfanye=1&type=2&cid=0&ishot=-1&pn=1&ps=20&level=&name=&langtype=zh&pid=1&zoneId=Asia%2FShanghai
 // 足球 https://dszbok.com/prod-api/match/list/new?isfanye=1&type=1&cid=0&ishot=-1&pn=1&ps=20&level=&name=&langtype=zh&pid=1&zoneId=Asia%2FShanghai
 // 首页 https://dszbok.com/prod-api/match/list/new?isfanye=1&type=0&cid=0&ishot=1&pn=1&ps=20&level=&name=&langtype=zh&pid=1&zoneId=Asia%2FShanghai

@@ -5,6 +5,7 @@ import Home, { hotLoader } from './pages/home'
 import Cates, { catesLoader } from './pages/cates'
 import Match, { matchLoader } from './pages/match'
 import Type, { typeLoader } from './pages/type'
+import Cate, { cateLoader } from './pages/cate'
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,12 @@ const router = createBrowserRouter([
         path: '/hot/:type',
         loader: typeLoader,
         element: <Type />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: 'cate/:id/:type',
+        loader: cateLoader,
+        element: <Cate />,
         errorElement: <ErrorPage />,
       },
       {
