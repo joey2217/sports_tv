@@ -21,7 +21,7 @@ export interface Match {
   ouzhi_jishi: string
   type: number
   score: string
-  status_up: number
+  status_up: number // 8/10 = 完场
   video_url: string
   id: number
   ateam_logo: string

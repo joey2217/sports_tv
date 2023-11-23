@@ -1,18 +1,20 @@
-import React, { useState } from 'react'
-import {
-  useLoaderData,
-  type LoaderFunction,
-  Outlet,
-  NavLink,
-} from 'react-router-dom'
-import { fetchMatchData } from '../../api'
-import type { MatchData, LiveInfo } from '../../types'
-import Player from '../../components/Player'
+import React, { useEffect, useMemo, useState } from 'react'
+import { useLoaderData, type LoaderFunction, useParams } from 'react-router-dom'
+import { fetchMatchData, fetchMatchStats } from '../../api'
+import type { MatchData, LiveInfo, MatchStats } from '../../types'
 import dayjs from 'dayjs'
+import Tabs from '../../components/Tabs'
+import Stats from './Stats'
+import Player from '../../components/Player'
 
-export const matchLoader: LoaderFunction = ({ params }) => {
+export const matchLoader: LoaderFunction = async ({ params }) => {
   if (params.id) {
-    return fetchMatchData(params.id, params.type)
+    const match = await fetchMatchData(params.id, params.type)
+    const stats = await fetchMatchStats(params.id)
+    return {
+      match,
+      stats,
+    }
   }
   return Response.json(
     { msg: '数据错误' },
@@ -20,30 +22,82 @@ export const matchLoader: LoaderFunction = ({ params }) => {
   )
 }
 
+// const MATCH_STATUS = [1, 8, 10]
+
 const Match: React.FC = () => {
-  const data = useLoaderData() as MatchData
-  console.log(data)
-  const [currentLive, setCurrentLive] = useState<LiveInfo>(
-    data.matchinfo.live_urls[0]
+  const params = useParams()
+  const data = useLoaderData() as {
+    match: MatchData
+    stats?: MatchStats
+  }
+
+  console.log(data.match.matchinfo.live_urls)
+  console.log(data.stats)
+
+  const [currentLive, setCurrentLive] = useState<LiveInfo>(() => {
+    const cur = data.match.matchinfo.live_urls.find(
+      (l) => l.name === '腾讯' || l.name.includes('清')
+    )
+    return cur || data.match.matchinfo.live_urls[0]
+  })
+
+  const [match, setMatch] = useState(data.match.matchinfo)
+  const [stats, setStats] = useState<MatchStats | undefined>(data.stats)
+  const [loading, setLoading] = useState(false)
+  const [updateStamp, setUpdateStamp] = useState(0)
+
+  const playing = useMemo(
+    () => data.match.matchinfo.status === 0,
+    [data.match.matchinfo.status]
   )
-  const match = data.matchinfo
+
+  useEffect(() => {
+    if (playing && params.id && params.type && updateStamp) {
+      setLoading(true)
+      const res1 = fetchMatchData(params.id, params.type).then((data) =>
+        setMatch(data.matchinfo)
+      )
+      const res2 = fetchMatchStats(params.id).then(setStats)
+      Promise.all([res1, res2]).finally(() => {
+        setLoading(false)
+      })
+    }
+  }, [params.id, params.type, playing, updateStamp])
+
+  useEffect(() => {
+    let timer: number | undefined
+    if (playing) {
+      timer = setInterval(() => setUpdateStamp((t) => t + 1), 6000)
+    }
+    return () => clearInterval(timer)
+  }, [playing])
+
   return (
     <section>
-      <div>{currentLive && <Player liveUrl={currentLive.url} />}</div>
-      <div className="text-center">
-        <div className="join">
-          {data.matchinfo.live_urls.map((live) => (
-            <button
-              key={live.index}
-              onClick={() => setCurrentLive(live)}
-              className={`btn btn-sm join-item ${
-                live.index === currentLive.index ? 'btn-primary' : ''
-              }`}
-            >
-              {live.name}
-            </button>
-          ))}
-        </div>
+      <div>
+        {playing && currentLive && <Player liveUrl={currentLive.url} />}
+      </div>
+      <div>
+        <div>status:{match.status}</div>
+        <div>status_up:{match.status_up}</div>
+        <div>status_up_name:{match.status_up_name}</div>
+      </div>
+      <div className="text-center mt-4">
+        {playing && (
+          <div className="join">
+            {data.match.matchinfo.live_urls.map((live) => (
+              <button
+                key={live.index}
+                onClick={() => setCurrentLive(live)}
+                className={`btn btn-sm join-item ${
+                  live.index === currentLive.index ? 'btn-primary' : ''
+                }`}
+              >
+                {live.name}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       <div className="mx-auto my-4 p-2 max-w-lg rounded-lg lg:rounded-2xl shadow-xl text-center flex items-center justify-between gap-1 lg:gap-4">
         <div className="w-24 flex flex-col items-center">
@@ -68,27 +122,33 @@ const Match: React.FC = () => {
           <div className="truncate w-full">{match.ateam_name}</div>
         </div>
       </div>
-      <div role="tablist" className="tabs tabs-boxed  max-w-lg mx-auto">
-        <NavLink
-          role="tab"
-          className={({ isActive }) => (isActive ? 'tab tab-active' : 'tab')}
-          to=""
-          end
-        >
-          数据统计
-        </NavLink>
-        <NavLink
-          role="tab"
-          className={({ isActive }) => (isActive ? 'tab tab-active' : 'tab')}
-          to="team"
-          end
-        >
-          球队数据
-        </NavLink>
-      </div>
-      <div className="container mx-auto">
-        <Outlet context={data} />
-      </div>
+      {playing && (
+        <div className="my-4 text-center">
+          <button
+            className="btn btn-sm btn-success"
+            disabled={loading}
+            onClick={() => setUpdateStamp((t) => t + 1)}
+          >
+            刷新数据
+          </button>
+        </div>
+      )}
+      {stats && (
+        <Tabs
+          items={[
+            {
+              label: '数据统计',
+              value: 0,
+              children: <Stats match={match} matchStats={stats} />,
+            },
+            {
+              label: '球队数据',
+              value: 1,
+              children: null,
+            },
+          ]}
+        />
+      )}
     </section>
   )
 }

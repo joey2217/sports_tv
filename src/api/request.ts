@@ -8,16 +8,18 @@ const timestamp = Date.now().toString()
 interface RequestConfig {
   url?: string
   params?: Record<string, unknown>
+  cache?: boolean
 }
 
 export default function request(config: RequestConfig) {
   const searchParams = new URLSearchParams(
     config.params as Record<string, string>
   )
-  searchParams.append('t', timestamp)
+  if (config.cache) {
+    searchParams.append('t', timestamp)
+  }
   return fetch(BASE_URL + config.url + '?' + searchParams.toString(), {
     method: 'GET',
-    cache: 'force-cache',
     headers: {
       'Content-Type': 'application/json',
     },

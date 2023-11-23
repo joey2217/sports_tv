@@ -1,35 +1,49 @@
 import React, { useEffect, useState } from 'react'
-import { LoaderFunction, useLoaderData } from 'react-router-dom'
+import { LoaderFunction, useLoaderData, useParams } from 'react-router-dom'
 import { fetchHotPageData } from '../api'
 import { HotPageData, Match } from '../types'
 import LoadMore from '../components/LoadMore'
 import MatchCard from '../components/MatchCard'
 
-export const hotLoader: LoaderFunction = () => {
-  return fetchHotPageData().then((data) => {
-    const { dataList, topList, ...rest } = data
-    return {
-      data: rest,
-      dataList: topList.concat(dataList),
-    }
-  })
+export const typeLoader: LoaderFunction = ({ params }) => {
+  if (params.type) {
+    return fetchHotPageData({ type: params.type }).then((data) => {
+      const { dataList, topList, ...rest } = data
+      return {
+        data: rest,
+        dataList: topList.concat(dataList),
+      }
+    })
+  }
+  return Response.json(
+    { msg: '数据错误' },
+    { statusText: '暂无数据', status: 404 }
+  )
 }
 
-const Home: React.FC = () => {
-  const { data, dataList } = useLoaderData() as {
+const Type: React.FC = () => {
+  const data = useLoaderData() as {
     data: HotPageData
     dataList: Match[]
   }
 
+  const params = useParams()
+
   const [page, setPage] = useState<number>()
-  const [pageData, setPageData] = useState<HotPageData>(data)
-  const [list, setList] = useState(dataList)
+  const [pageData, setPageData] = useState<HotPageData>()
+  const [list, setList] = useState<Match[]>([])
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setPageData(data.data)
+    setList(data.dataList)
+    setPage(undefined)
+  }, [data.data, data.dataList])
 
   useEffect(() => {
     if (page) {
       setLoading(true)
-      fetchHotPageData({ pn: page })
+      fetchHotPageData({ pn: page, type: params.type })
         .then((data) => {
           const { dataList, topList, ...rest } = data
           setPageData(rest as HotPageData)
@@ -39,7 +53,7 @@ const Home: React.FC = () => {
           setLoading(false)
         })
     }
-  }, [page])
+  }, [page, params.type])
 
   return (
     <div>
@@ -48,7 +62,7 @@ const Home: React.FC = () => {
           <MatchCard key={m.id} match={m} />
         ))}
       </div>
-      {pageData.currentPage < pageData.totalPage ? (
+      {pageData && pageData.currentPage < pageData.totalPage ? (
         <LoadMore
           loading={loading}
           loadData={() => setPage((p) => (p ? p + 1 : 2))}
@@ -60,4 +74,4 @@ const Home: React.FC = () => {
   )
 }
 
-export default Home
+export default Type

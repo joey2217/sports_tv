@@ -1,8 +1,17 @@
 import type { HotPageData, MatchData, MatchStats, TeamStats } from '../types'
 import request from './request'
 
-// https://dszbok.com/prod-api/match/list/new?isfanye=1&type=0&cid=0&ishot=1&pn=1&ps=20&level=&name=&langtype=zh&pid=1&zoneId=Asia%2FShanghai
-export function fetchHotPageData(page = 1): Promise<HotPageData> {
+export interface PageParams {
+  pn: number | string
+  type: number | string
+}
+
+// 篮球 https://dszbok.com/prod-api/match/list/new?isfanye=1&type=2&cid=0&ishot=-1&pn=1&ps=20&level=&name=&langtype=zh&pid=1&zoneId=Asia%2FShanghai
+// 足球 https://dszbok.com/prod-api/match/list/new?isfanye=1&type=1&cid=0&ishot=-1&pn=1&ps=20&level=&name=&langtype=zh&pid=1&zoneId=Asia%2FShanghai
+// 首页 https://dszbok.com/prod-api/match/list/new?isfanye=1&type=0&cid=0&ishot=1&pn=1&ps=20&level=&name=&langtype=zh&pid=1&zoneId=Asia%2FShanghai
+export function fetchHotPageData(
+  params?: Partial<PageParams>
+): Promise<HotPageData> {
   return request({
     url: '/match/list/new',
     params: {
@@ -10,13 +19,14 @@ export function fetchHotPageData(page = 1): Promise<HotPageData> {
       type: 0,
       cid: 0,
       ishot: 1,
-      pn: page,
+      pn: 1,
       ps: 20,
       level: '',
       name: '',
       langtype: 'zh',
       pid: 1,
       zoneId: 'Asia/Shanghai',
+      ...params,
     },
   }).then((res) => res.data)
 }
@@ -42,7 +52,9 @@ export function fetchMatchData(
 
 // https://dszbok.com/prod-api/match/detail/tabs?mid=3735671&type=2&tabtype=2&langtype=zh
 // 统计
-export function fetchMatchStats(mid: string | number): Promise<MatchStats> {
+export function fetchMatchStats(
+  mid: string | number
+): Promise<MatchStats | undefined> {
   return request({
     url: '/match/detail/tabs',
     params: {
@@ -52,13 +64,17 @@ export function fetchMatchStats(mid: string | number): Promise<MatchStats> {
       langtype: 'zh',
     },
   }).then((res) => {
-    const stats = JSON.parse(res.data)
-    const homerank = JSON.parse(stats.homerank)
-    const awayrank = JSON.parse(stats.awayrank)
-    return {
-      players: stats.players,
-      awayrank,
-      homerank,
+    if (typeof res.data === 'string') {
+      const stats = JSON.parse(res.data)
+      const homerank = JSON.parse(stats.homerank)
+      const awayrank = JSON.parse(stats.awayrank)
+      return {
+        players: stats.players,
+        awayrank,
+        homerank,
+      }
+    } else {
+      return undefined
     }
   })
 }
