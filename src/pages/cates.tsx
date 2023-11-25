@@ -24,7 +24,7 @@ const Cates: React.FC = () => {
             />
             <span>{cate.name_zh}</span>
           </Link>
-          <button>like</button>
+          {/* <button>like</button> */}
         </div>
       ))}
     </div>

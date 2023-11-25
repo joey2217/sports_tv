@@ -31,9 +31,6 @@ const Match: React.FC = () => {
     stats?: MatchStats
   }
 
-  console.log(data.match.matchinfo.live_urls)
-  console.log(data.stats)
-
   const [currentLive, setCurrentLive] = useState<LiveInfo>(() => {
     const cur = data.match.matchinfo.live_urls.find(
       (l) => l.name === '腾讯' || l.name.includes('清')
@@ -51,6 +48,8 @@ const Match: React.FC = () => {
     [data.match.matchinfo.status]
   )
 
+  const liveUrl = useMemo(() => currentLive.url, [currentLive.url])
+
   useEffect(() => {
     if (playing && params.id && params.type && updateStamp) {
       setLoading(true)
@@ -64,24 +63,17 @@ const Match: React.FC = () => {
     }
   }, [params.id, params.type, playing, updateStamp])
 
-  useEffect(() => {
-    let timer: number | undefined
-    if (playing) {
-      timer = setInterval(() => setUpdateStamp((t) => t + 1), 6000)
-    }
-    return () => clearInterval(timer)
-  }, [playing])
+  // useEffect(() => {
+  //   let timer: number | undefined
+  //   if (playing) {
+  //     timer = setInterval(() => setUpdateStamp((t) => t + 1), 6000)
+  //   }
+  //   return () => clearInterval(timer)
+  // }, [playing])
 
   return (
     <section>
-      <div>
-        {playing && currentLive && <Player liveUrl={currentLive.url} />}
-      </div>
-      <div>
-        <div>status:{match.status}</div>
-        <div>status_up:{match.status_up}</div>
-        <div>status_up_name:{match.status_up_name}</div>
-      </div>
+      <div>{playing && currentLive && <Player liveUrl={liveUrl} />}</div>
       <div className="text-center mt-4">
         {playing && (
           <div className="join">
@@ -133,22 +125,30 @@ const Match: React.FC = () => {
           </button>
         </div>
       )}
-      {stats && (
-        <Tabs
-          items={[
-            {
-              label: '数据统计',
-              value: 0,
-              children: <Stats match={match} matchStats={stats} />,
-            },
-            {
-              label: '球队数据',
-              value: 1,
-              children: null,
-            },
-          ]}
-        />
-      )}
+      <div className="mx-auto my-4 p-2 max-w-lg ">
+        {stats && (
+          <Tabs
+            className="tabs-boxed"
+            items={[
+              {
+                label: '数据统计',
+                value: 0,
+                children: <Stats match={match} matchStats={stats} />,
+              },
+              {
+                label: '球队数据',
+                value: 1,
+                children: null,
+              },
+            ]}
+          />
+        )}
+      </div>
+      <div>
+        <div>status:{match.status}</div>
+        <div>status_up:{match.status_up}</div>
+        <div>status_up_name:{match.status_up_name}</div>
+      </div>
     </section>
   )
 }
