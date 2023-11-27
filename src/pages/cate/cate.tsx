@@ -88,7 +88,7 @@ const Cate: React.FC = () => {
           <input
             type="date"
             name="date"
-            className="input input-bordered"
+            className="input input-bordered w-full"
             defaultValue={data.date || today}
             onChange={submitData}
           />
