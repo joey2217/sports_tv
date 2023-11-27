@@ -5,6 +5,8 @@ export interface PageParams {
   pn: number | string
   type: number | string
   cid: number | string
+  ishot: number | string
+  starttime: string | null
 }
 
 // 法甲 https://dszbok.com/prod-api/match/list/new?isfanye=1&type=1&cid=142&ishot=-1&pn=1&ps=20&level=&name=&langtype=zh&starttime=2023-11-23&pid=1&zoneId=Asia%2FShanghai

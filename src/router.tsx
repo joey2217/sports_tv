@@ -2,10 +2,11 @@ import { createBrowserRouter } from 'react-router-dom'
 import Layout from './layout'
 import ErrorPage from './pages/error'
 import Home, { hotLoader } from './pages/home'
-import Cates, { catesLoader } from './pages/cates'
+import Cates, { catesLoader } from './pages/cate/cates'
 import Match, { matchLoader } from './pages/match'
 import Type, { typeLoader } from './pages/type'
-import Cate, { cateLoader } from './pages/cate'
+import Cate, { cateLoader } from './pages/cate/cate'
+import CateIndex from './pages/cate'
 
 const router = createBrowserRouter([
   {
@@ -26,16 +27,22 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
       },
       {
-        path: 'cate/:id/:type',
-        loader: cateLoader,
-        element: <Cate />,
+        path: 'cate',
+        element: <CateIndex />,
         errorElement: <ErrorPage />,
-      },
-      {
-        path: 'cates',
-        loader: catesLoader,
-        element: <Cates />,
-        errorElement: <ErrorPage />,
+        children: [
+          {
+            index: true,
+            loader: catesLoader,
+            element: <Cates />,
+          },
+          {
+            path: ':id/:type',
+            loader: cateLoader,
+            element: <Cate />,
+            errorElement: <ErrorPage />,
+          },
+        ],
       },
       {
         path: 'match/:id/:type',

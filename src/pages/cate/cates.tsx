@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLoaderData, type LoaderFunction, Link } from 'react-router-dom'
-import { fetchCategoryList } from '../api/category'
-import { Category } from '../types'
+import { fetchCategoryList } from '../../api/category'
+import { Category } from '../../types'
 
 export const catesLoader: LoaderFunction = () => {
   return fetchCategoryList()
@@ -15,7 +15,7 @@ const Cates: React.FC = () => {
         <div key={cate.id} className="flex items-center gap-1">
           <Link
             className="flex items-center link"
-            to={`/cate/${cate.id}/${cate.type}`}
+            to={`${cate.id}/${cate.type}`}
           >
             <img
               src={cate.logo}
