@@ -3,8 +3,10 @@ import { HotPageData } from '@/types'
 import React from 'react'
 import { useLoaderData } from 'react-router-dom'
 
-const Home: React.FC = () => {
-  const { topList, dataList } = useLoaderData() as HotPageData
+const Hot: React.FC = () => {
+  const { topList, dataList } = useLoaderData() as HotPageData & {
+    type: string
+  }
   return (
     <div className="main">
       {topList.length > 0 && (
@@ -31,4 +33,4 @@ const Home: React.FC = () => {
   )
 }
 
-export default Home
+export default Hot

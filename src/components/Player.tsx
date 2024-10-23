@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef } from 'react'
 import Hls from 'hls.js'
-import { throttle } from '../utils'
+import { throttle } from '../lib/index'
 
 interface Props {
   liveUrl?: string
@@ -167,6 +167,10 @@ const HlsPlayer: React.FC<Props> = ({ liveUrl, seek, onEnd, onTimeUpdate }) => {
       }
     }
   }, [onEnd, onTimeUpdate, seek])
+
+  if (import.meta.env.DEV) {
+    return liveUrl
+  }
 
   return (
     <video

@@ -59,6 +59,7 @@ export interface Match {
 export interface HotPageData {
   total: number
   totalPage: number
+  list: Match[]
   notopList: Match[]
   dataList: Match[]
   topList: Match[]

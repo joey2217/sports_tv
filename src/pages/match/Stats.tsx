@@ -1,17 +1,5 @@
 import React from 'react'
-import { type LoaderFunction } from 'react-router-dom'
-import { fetchMatchStats } from '../../api'
 import type { MatchInfo, MatchStats } from '../../types'
-
-export const matchStatsLoader: LoaderFunction = ({ params }) => {
-  if (params.id) {
-    return fetchMatchStats(params.id)
-  }
-  return Response.json(
-    { msg: '数据错误' },
-    { statusText: '暂无数据', status: 404 }
-  )
-}
 
 interface Props {
   match: MatchInfo

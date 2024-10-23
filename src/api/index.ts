@@ -1,4 +1,4 @@
-import type { HotPageData, MatchData, MatchStats, TeamStats } from '../types'
+import { Category, HotPageData, MatchData, MatchStats } from '@/types'
 import request from './request'
 
 export interface PageParams {
@@ -14,10 +14,8 @@ export interface PageParams {
 // 篮球 https://dszbok.com/prod-api/match/list/new?isfanye=1&type=2&cid=0&ishot=-1&pn=1&ps=20&level=&name=&langtype=zh&pid=1&zoneId=Asia%2FShanghai
 // 足球 https://dszbok.com/prod-api/match/list/new?isfanye=1&type=1&cid=0&ishot=-1&pn=1&ps=20&level=&name=&langtype=zh&pid=1&zoneId=Asia%2FShanghai
 // 首页 https://dszbok.com/prod-api/match/list/new?isfanye=1&type=0&cid=0&ishot=1&pn=1&ps=20&level=&name=&langtype=zh&pid=1&zoneId=Asia%2FShanghai
-export function fetchHotPageData(
-  params?: Partial<PageParams>
-): Promise<HotPageData> {
-  return request({
+export function fetchHotPageData(params?: Partial<PageParams>) {
+  return request<HotPageData>({
     url: '/match/list/new',
     params: {
       isfanye: 1,
@@ -33,15 +31,12 @@ export function fetchHotPageData(
       zoneId: 'Asia/Shanghai',
       ...params,
     },
-  }).then((res) => res.data)
+  })
 }
 
 // https://dszbok.com/prod-api/match/detail?mid=4030887&type=1&isnew=1&pid=1&langtype=zh&test=1&zoneId=Asia%2FShanghai
-export function fetchMatchData(
-  mid: string | number,
-  type = '1'
-): Promise<MatchData> {
-  return request({
+export function fetchMatchData(mid: string | number, type = '1') {
+  return request<MatchData>({
     url: '/match/detail',
     params: {
       mid,
@@ -52,14 +47,14 @@ export function fetchMatchData(
       test: 1,
       zoneId: 'Asia/Shanghai',
     },
-  }).then((res) => res.data)
+  })
 }
 
 // https://dszbok.com/prod-api/match/detail/tabs?mid=3735671&type=2&tabtype=2&langtype=zh
 // 统计
 export function fetchMatchStats(
   mid: string | number
-): Promise<MatchStats | undefined> {
+): Promise<MatchStats | null> {
   return request({
     url: '/match/detail/tabs',
     params: {
@@ -68,9 +63,9 @@ export function fetchMatchStats(
       tabtype: 2,
       langtype: 'zh',
     },
-  }).then((res) => {
-    if (typeof res.data === 'string') {
-      const stats = JSON.parse(res.data)
+  }).then((data) => {
+    if (typeof data === 'string') {
+      const stats = JSON.parse(data)
       const homerank = JSON.parse(stats.homerank)
       const awayrank = JSON.parse(stats.awayrank)
       return {
@@ -79,20 +74,19 @@ export function fetchMatchStats(
         homerank,
       }
     } else {
-      return undefined
+      return null
     }
   })
 }
 
-// https://dszbok.com/prod-api/match/detail/tabs?mid=3735671&type=2&tabtype=3&langtype=zh
-export function fetchMatchTeamStats(mid: string | number): Promise<TeamStats> {
-  return request({
-    url: '/match/detail/tabs',
+export function fetchCategoryList() {
+  return request<{ twoCategoryList: Category[] }>({
+    url: '/category/list',
     params: {
-      mid,
-      type: 2,
-      tabtype: 3,
+      type: 0,
+      isoften: 1,
+      ishot: 1,
       langtype: 'zh',
     },
-  }).then((res) => res.data)
+  }).then((data) => data.twoCategoryList)
 }

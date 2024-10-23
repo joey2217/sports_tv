@@ -1,43 +1,55 @@
 import React, { useEffect, useRef } from 'react'
+import { Skeleton } from './ui/skeleton'
 
 interface Props {
   loadData: () => void
   loading: boolean
+  finished: boolean
 }
 
-let loadMoreObserver: IntersectionObserver
-
-const LoadMore: React.FC<Props> = ({ loadData, loading }) => {
-  const loadRef = useRef<HTMLDivElement>(null!)
+const LoadMore: React.FC<Props> = ({ loadData, loading, finished }) => {
+  const loadRef = useRef<HTMLDivElement>(null)
+  const loadMoreObserverRef = useRef<IntersectionObserver>()
 
   useEffect(() => {
-    loadMoreObserver = new IntersectionObserver((entries) => {
+    loadMoreObserverRef.current = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           loadData()
-          console.log('loadData')
         }
       })
     })
     return () => {
-      loadMoreObserver.disconnect()
+      loadMoreObserverRef.current?.disconnect()
     }
   }, [loadData])
 
   useEffect(() => {
     const loadEl = loadRef.current
-    if (loading) {
-      loadMoreObserver.unobserve(loadEl)
-    } else {
-      loadMoreObserver.observe(loadEl)
+    if (loadEl) {
+      if (loading) {
+        loadMoreObserverRef.current?.unobserve(loadEl)
+      } else {
+        loadMoreObserverRef.current?.observe(loadEl)
+      }
     }
   }, [loading])
 
+  useEffect(() => {
+    if (finished) {
+      loadMoreObserverRef.current?.disconnect()
+    }
+  }, [finished])
+
+  if (finished) {
+    return <div className="text-center py-2">没有更多了</div>
+  }
+
   return (
-    <div ref={loadRef} className="flex flex-col gap-4">
-      <div className="skeleton h-4 w-full"></div>
-      <div className="skeleton h-4 w-full"></div>
-      <div className="skeleton h-4 w-full"></div>
+    <div ref={loadRef} className="space-y-2">
+      <Skeleton />
+      <Skeleton />
+      <Skeleton />
     </div>
   )
 }

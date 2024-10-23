@@ -1,7 +1,7 @@
 {
     "rewrites": [
         {
-            "source": "/prod-api/:match*",
+            "source": "/api/:match*",
             "destination": "https://dszbok.com/prod-api/:match*"
         },
         {

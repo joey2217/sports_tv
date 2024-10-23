@@ -1,13 +1,8 @@
+import { Category } from '@/types'
 import React from 'react'
-import { useLoaderData, type LoaderFunction, Link } from 'react-router-dom'
-import { fetchCategoryList } from '../../api/category'
-import { Category } from '../../types'
+import { Link, useLoaderData } from 'react-router-dom'
 
-export const catesLoader: LoaderFunction = () => {
-  return fetchCategoryList()
-}
-
-const Cates: React.FC = () => {
+const CategoryIndex: React.FC = () => {
   const data = useLoaderData() as Category[]
   return (
     <div className="grid gap-2 md:gap-4 grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
@@ -15,7 +10,7 @@ const Cates: React.FC = () => {
         <div key={cate.id} className="flex items-center gap-1">
           <Link
             className="flex items-center link"
-            to={`${cate.id}/${cate.type}`}
+            to={`c/${cate.id}/${cate.type}`}
           >
             <img
               src={cate.logo}
@@ -31,4 +26,4 @@ const Cates: React.FC = () => {
   )
 }
 
-export default Cates
+export default CategoryIndex

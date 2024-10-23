@@ -1,7 +1,7 @@
 // https://dszbok.com/prod-api/category/list?type=0&isoften=1&ishot=1&langtype=zh
 
 // const BASE_URL = 'https://dszbok.com/prod-api'
-const BASE_URL = '/prod-api'
+const BASE_URL = '/api'
 
 const timestamp = Date.now().toString()
 
@@ -11,7 +11,13 @@ interface RequestConfig {
   cache?: boolean
 }
 
-export default function request(config: RequestConfig) {
+interface ResponseData<T = unknown> {
+  code: '0'
+  data: T
+  msg: string
+}
+
+export default function request<T = unknown>(config: RequestConfig) {
   const searchParams = new URLSearchParams(
     config.params as Record<string, string>
   )
@@ -25,7 +31,16 @@ export default function request(config: RequestConfig) {
     },
   })
     .then((res) => res.json())
+    .then((res: ResponseData<T>) => {
+      if (res.code === '0') {
+        return res.data
+      } else {
+        console.error('fetch error', config, res)
+        throw new Error(res.msg)
+      }
+    })
     .catch((error) => {
-      console.error(error)
+      console.error('fetch error', config, error)
+      throw error
     })
 }
